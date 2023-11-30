@@ -20,4 +20,5 @@ export class User {
 
 }
 
+//poner en cada uno de los entity
 export const UserSchema = SchemaFactory.createForClass ( User );

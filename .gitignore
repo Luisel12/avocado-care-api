@@ -2,7 +2,7 @@
 /dist
 /node_modules
 #base de datos 
-mongo
+/mongo
 # Logs
 logs
 *.log

@@ -12,7 +12,7 @@ export class User {
     Correo: string;
 
     @Prop({ minlength: 8, required: true })
-    Contra: string;
+    Contra?: string;
 
     @Prop({ default: true })
     isActive: boolean;

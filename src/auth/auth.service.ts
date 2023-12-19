@@ -16,23 +16,23 @@ export class AuthService {
   async create(createAuthDto: CreateUserDto): Promise<User> {
     const user = await this.Usermodel1.create(createAuthDto);
 
-    const { Contra, ...rest } = user.toJSON(); 
+    const { Contra, ...rest } = user.toJSON(); //esto depende si se ocupa 
     return rest;
   }
 
-  findAll() {
+  async findAll() {
     return `This action returns all auth`;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return `This action returns a #${id} auth`;
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
+  async update(id: number, updateAuthDto: UpdateAuthDto): Promise <User> {
+    return ;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} auth`;
   }
 }

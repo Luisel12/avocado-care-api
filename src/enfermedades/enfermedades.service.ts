@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEnfermedadeDto } from './dto/create-enfermedade.dto';
 import { UpdateEnfermedadeDto } from './dto/update-enfermedade.dto';
+import { promises } from 'dns';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, model } from 'mongoose';
+import { Enfermedade } from './entities/enfermedade.entity';
 
 @Injectable()
 export class EnfermedadesService {
-  create(createEnfermedadeDto: CreateEnfermedadeDto) {
-    return 'This action adds a new enfermedade';
+  constructor(
+    @InjectModel(Enfermedade.name) private EnfermedadeModel1: Model<Enfermedade>
+  ) {}
+
+  async create(createEnfermedadeDto: CreateEnfermedadeDto): Promise<Enfermedade> {
+    const Enfermedade = await this.EnfermedadeModel1.create(CreateEnfermedadeDto);
+ 
+    return Enfermedade;
   }
 
-  findAll() {
+  async findAll() {
     return `This action returns all enfermedades`;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return `This action returns a #${id} enfermedade`;
   }
 
-  update(id: number, updateEnfermedadeDto: UpdateEnfermedadeDto) {
-    return `This action updates a #${id} enfermedade`;
+  async update(id: number, updateEnfermedadeDto: UpdateEnfermedadeDto): Promise <Enfermedade> {
+    return;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} enfermedade`;
   }
 }

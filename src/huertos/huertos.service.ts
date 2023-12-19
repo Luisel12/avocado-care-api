@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateHuertoDto } from './dto/create-huerto.dto';
 import { UpdateHuertoDto } from './dto/update-huerto.dto';
+import { promises } from 'dns';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, model } from 'mongoose';
+import { Huerto } from './entities/huerto.entity';
 
 @Injectable()
 export class HuertosService {
-  create(createHuertoDto: CreateHuertoDto) {
-    return 'This action adds a new huerto';
+  constructor(
+    @InjectModel(Huerto.name) private HuertoModel1: Model<Huerto>
+  ) {}
+
+  async create(createHuertoDto: CreateHuertoDto): Promise<Huerto> {
+    const Huerto = await this.HuertoModel1.create(CreateHuertoDto);
+ 
+    return Huerto;
   }
 
-  findAll() {
+  async findAll() {
     return `This action returns all huertos`;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return `This action returns a #${id} huerto`;
   }
 
-  update(id: number, updateHuertoDto: UpdateHuertoDto) {
-    return `This action updates a #${id} huerto`;
+  async update(id: number, updateHuertoDto: UpdateHuertoDto): Promise <Huerto > {
+    return ;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} huerto`;
   }
 }

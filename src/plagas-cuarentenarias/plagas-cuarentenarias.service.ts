@@ -26,8 +26,8 @@ export class PlagasCuarentenariasService {
     return `This action returns a #${id} plagasCuarentenaria`;
   }
 
-  async update(id: number, updatePlagasCuarentenariaDto: UpdatePlagasCuarentenariaDto) {
-    return `This action updates a #${id} plagasCuarentenaria`;
+  async update(id: number, updatePlagasCuarentenariaDto: UpdatePlagasCuarentenariaDto): Promise <PlagasCuarentenaria>{
+    return ;
   }
 
   async remove(id: number) {

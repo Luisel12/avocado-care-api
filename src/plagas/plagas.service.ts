@@ -25,8 +25,8 @@ export class PlagasService {
     return `This action returns a #${id} plagas`;
   }
 
-  update(id: number, updatePlagasDto: UpdatePlagasDto) {
-    return `This action updates a #${id} plagas`;
+  update(id: number, updatePlagasDto: UpdatePlagasDto): Promise <Plagas> {
+    return ;
   }
 
   remove(id: number) {

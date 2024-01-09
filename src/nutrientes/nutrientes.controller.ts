@@ -3,7 +3,8 @@ import { NutrientesService } from './nutrientes.service';
 import { CreateNutrienteDto } from './dto/create-nutriente.dto';
 import { UpdateNutrienteDto } from './dto/update-nutriente.dto';
 
-@Controller('nutrientes')
+//esto va en todas la carpetas
+@Controller('api/v1/nutrientes')
 export class NutrientesController {
   constructor(private readonly nutrientesService: NutrientesService) {}
 

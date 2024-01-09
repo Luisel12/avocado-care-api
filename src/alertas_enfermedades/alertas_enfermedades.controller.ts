@@ -3,7 +3,8 @@ import { AlertasEnfermedadesService } from './alertas_enfermedades.service';
 import { CreateAlertasEnfermedadeDto } from './dto/create-alertas_enfermedade.dto';
 import { UpdateAlertasEnfermedadeDto } from './dto/update-alertas_enfermedade.dto';
 
-@Controller('alertas-enfermedades')
+//esto va en todas la carpetas
+@Controller('api/v1/alertas-enfermedades')
 export class AlertasEnfermedadesController {
   constructor(private readonly alertasEnfermedadesService: AlertasEnfermedadesService) {}
 

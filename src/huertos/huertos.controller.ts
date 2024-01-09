@@ -3,7 +3,8 @@ import { HuertosService } from './huertos.service';
 import { CreateHuertoDto } from './dto/create-huerto.dto';
 import { UpdateHuertoDto } from './dto/update-huerto.dto';
 
-@Controller('huertos')
+//esto va en todas la carpetas
+@Controller('api/v1/huertos')
 export class HuertosController {
   constructor(private readonly huertosService: HuertosService) {}
 

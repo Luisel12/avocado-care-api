@@ -3,7 +3,8 @@ import { PlagasService } from './plagas.service';
 import { CreatePlagasDto } from './dto/create-plagas.dto';
 import { UpdatePlagasDto } from './dto/update-plagas.dto';
 
-@Controller('plagas')
+//esto va en todas la carpetas
+@Controller('api/v1/plagas')
 export class PlagasController {
   constructor(private readonly plagasService: PlagasService) {}
 

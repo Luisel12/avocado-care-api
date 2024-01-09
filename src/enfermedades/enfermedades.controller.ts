@@ -3,7 +3,8 @@ import { EnfermedadesService } from './enfermedades.service';
 import { CreateEnfermedadeDto } from './dto/create-enfermedade.dto';
 import { UpdateEnfermedadeDto } from './dto/update-enfermedade.dto';
 
-@Controller('enfermedades')
+//esto va en todas la carpetas
+@Controller('api/v1/enfermedades')
 export class EnfermedadesController {
   constructor(private readonly enfermedadesService: EnfermedadesService) {}
 

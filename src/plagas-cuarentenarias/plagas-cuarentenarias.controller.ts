@@ -3,7 +3,8 @@ import { PlagasCuarentenariasService } from './plagas-cuarentenarias.service';
 import { CreatePlagasCuarentenariaDto } from './dto/create-plagas-cuarentenaria.dto';
 import { UpdatePlagasCuarentenariaDto } from './dto/update-plagas-cuarentenaria.dto';
 
-@Controller('plagas-cuarentenarias')
+//esto va en todas la carpetas
+@Controller('api/v1/plagas-cuarentenarias')
 export class PlagasCuarentenariasController {
   constructor(private readonly plagasCuarentenariasService: PlagasCuarentenariasService) {}
 

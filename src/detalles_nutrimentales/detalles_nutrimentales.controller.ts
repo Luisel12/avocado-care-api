@@ -3,7 +3,8 @@ import { DetallesNutrimentalesService } from './detalles_nutrimentales.service';
 import { CreateDetallesNutrimentaleDto } from './dto/create-detalles_nutrimentale.dto';
 import { UpdateDetallesNutrimentaleDto } from './dto/update-detalles_nutrimentale.dto';
 
-@Controller('detalles-nutrimentales')
+//esto va en todas la carpetas
+@Controller('api/v1/detalles-nutrimentales')
 export class DetallesNutrimentalesController {
   constructor(private readonly detallesNutrimentalesService: DetallesNutrimentalesService) {}
 

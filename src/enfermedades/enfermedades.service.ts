@@ -6,6 +6,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, model } from 'mongoose';
 import { Enfermedade } from './entities/enfermedade.entity';
 
+
+
 @Injectable()
 export class EnfermedadesService {
   constructor(
@@ -18,8 +20,10 @@ export class EnfermedadesService {
     return Enfermedade;
   }
 
-  async findAll() {
-    return `This action returns all enfermedades`;
+  async findAll(): Promise<Enfermedade[]> {
+    const detalles = await this.EnfermedadeModel1.find();
+
+    return detalles;
   }
 
   async findOne(id: number) {

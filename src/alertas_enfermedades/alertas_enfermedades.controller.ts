@@ -2,20 +2,28 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AlertasEnfermedadesService } from './alertas_enfermedades.service';
 import { CreateAlertasEnfermedadeDto } from './dto/create-alertas_enfermedade.dto';
 import { UpdateAlertasEnfermedadeDto } from './dto/update-alertas_enfermedade.dto';
+import { Enfermedade } from 'src/enfermedades/entities/enfermedade.entity';
+import { ListResponse } from './interfaces/list-response.interface';
+
 
 //esto va en todas la carpetas
 @Controller('api/v1/alertas-enfermedades')
 export class AlertasEnfermedadesController {
   constructor(private readonly alertasEnfermedadesService: AlertasEnfermedadesService) {}
 
-  @Post()
+  @Post('register')
   create(@Body() createAlertasEnfermedadeDto: CreateAlertasEnfermedadeDto) {
     return this.alertasEnfermedadesService.create(createAlertasEnfermedadeDto);
   }
 
   @Get()
-  findAll() {
-    return this.alertasEnfermedadesService.findAll();
+  async findAll(): Promise<ListResponse> {
+    const alertas = await this.alertasEnfermedadesService.findAll();
+
+    return {
+      alertas: alertas, 
+      token: "jwt mamalon"
+    };
   }
 
   @Get(':id')

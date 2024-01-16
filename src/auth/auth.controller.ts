@@ -4,7 +4,6 @@ import { CreateUserDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { ListenOptions } from 'net';
 import { ListResponse } from './interfaces/list-response.interface';
-
 //esto va en todas la carpetas
 @Controller('api/v1/auth')
 export class AuthController {
@@ -14,7 +13,7 @@ export class AuthController {
   create(@Body() createAuthDto: CreateUserDto) {
     return this.authService.create(createAuthDto);
   }
-
+//aqui merengues 
   @Get()
   async findAll(): Promise<ListResponse> {
     const users = await this.authService.findAll();
@@ -23,6 +22,7 @@ export class AuthController {
       users: users, 
       token: "jwt mamalon"
     };
+
   }
 
   @Get(':id')

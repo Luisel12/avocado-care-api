@@ -6,6 +6,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, model } from 'mongoose';
 import { DetallesNutrimentale } from './entities/detalles_nutrimentale.entity';
 
+import * as bcrypt from "bcrypt";
+import { throwIfEmpty } from 'rxjs';
+import { Nutriente } from 'src/nutrientes/entities/nutriente.entity';
+
 @Injectable()
 export class DetallesNutrimentalesService {
   constructor(
@@ -13,14 +17,15 @@ export class DetallesNutrimentalesService {
   ) {}
 
   async create(createDetallesNutrimentaleDtoDto: CreateDetallesNutrimentaleDto): Promise<DetallesNutrimentale> {
-    const DetallesNutrimentale = await this.DetallesNutrimentaleModel1.create(CreateDetallesNutrimentaleDto);
 
     // Puedes realizar más operaciones o retornar el objeto creado según tus necesidades
-    return DetallesNutrimentale;
+    return ;
   }
 
-  async findAll() {
-    return `This action returns all detallesNutrimentales`;
+  async findAll(): Promises<Nutriente[]> {
+    const nutrimentales = await this.DetallesNutrimentaleModel1.find();
+
+    return nutrimentales ;
   }
 
   async findOne(id: number) {

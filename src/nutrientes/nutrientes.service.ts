@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { CreateNutrienteDto } from './dto/create-nutriente.dto';
 import { UpdateNutrienteDto } from './dto/update-nutriente.dto';
 import { promises } from 'dns';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, model } from 'mongoose';
 import { Nutriente } from './entities/nutriente.entity';
+
 
 @Injectable()
 export class NutrientesService {
@@ -13,13 +14,23 @@ export class NutrientesService {
   ) {}
 
   async create(createNutrienteDto: CreateNutrienteDto): Promise<Nutriente> {
-    const Nutriente = await this.NutrienteModel1.create(CreateNutrienteDto);
-  
-    return Nutriente;
+    try {
+      const nutriente = await this.NutrienteModel1.create(createNutrienteDto);
+      return nutriente;
+    } catch (error) {
+      console.log(error);
+      if (error.code == 11000) {
+        throw new BadRequestException(`${createNutrienteDto.potacio, createNutrienteDto.calcio,createNutrienteDto.magnecio,createNutrienteDto.fosforo } ya está registrado`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error al crear el Nutriente');
+    }
   }
 
+
   async findAll() {
-    return `This action returns all nutrientes`;
+    const nutriente = await this.NutrienteModel1.find();
+      return nutriente;
+ 
   }
 
   async  findOne(id: number) {

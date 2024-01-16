@@ -1,4 +1,4 @@
-import { IsLatitude, IsLongitude, IsString } from "class-validator";
+import { IsLatitude, IsLongitude, IsNumber, IsString } from "class-validator";
 
 export class CreateHuertoDto {
 
@@ -8,10 +8,10 @@ export class CreateHuertoDto {
     @IsString()
     Nombre: string;
 
-    @IsLatitude()
+    @IsNumber()
     Latitud: number;
 
-    @IsLongitude()
+    @IsNumber()
     Longitud: number;
 
     @IsString()
@@ -30,5 +30,5 @@ export class CreateHuertoDto {
     EtapaFenologica: string;
 
     @IsString()
-    Tipo_Riesgo: string;
+    Tipo_Riego: string;
 }

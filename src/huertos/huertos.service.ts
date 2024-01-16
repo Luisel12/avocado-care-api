@@ -5,6 +5,8 @@ import { promises } from 'dns';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, model } from 'mongoose';
 import { Huerto } from './entities/huerto.entity';
+import { BadRequestException } from '@nestjs/common';
+import { InternalServerErrorException } from '@nestjs/common';
 
 @Injectable()
 export class HuertosService {
@@ -13,13 +15,26 @@ export class HuertosService {
   ) {}
 
   async create(createHuertoDto: CreateHuertoDto): Promise<Huerto> {
-    const Huerto = await this.HuertoModel1.create(CreateHuertoDto);
- 
-    return Huerto;
+    try {
+                        
+      const huerto = await this.HuertoModel1.create(createHuertoDto);
+      return huerto;
+
+    } catch (error) {
+      console.log(error);
+      if (error.code == 11000) {
+        throw new BadRequestException(`${createHuertoDto.Nombre} ya está registrado`);
+      }
+
+      throw new InternalServerErrorException('Ocurrió un error al crear el Huerto');
+    }
   }
 
+
   async findAll() {
-    return `This action returns all huertos`;
+    const huerto = await this.HuertoModel1.find();
+      return huerto;
+ 
   }
 
   async findOne(id: number) {

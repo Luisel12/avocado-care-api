@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PlagasCuarentenariasService } from './plagas-cuarentenarias.service';
 import { CreatePlagasCuarentenariaDto } from './dto/create-plagas-cuarentenaria.dto';
 import { UpdatePlagasCuarentenariaDto } from './dto/update-plagas-cuarentenaria.dto';
+import { ListResponse } from 'src/plagas-cuarentenarias/interfaces/list-response.interface';
 
 //esto va en todas la carpetas
 @Controller('api/v1/plagas-cuarentenarias')
@@ -14,8 +15,14 @@ export class PlagasCuarentenariasController {
   }
 
   @Get()
-  findAll() {
-    return this.plagasCuarentenariasService.findAll();
+  async findAll(): Promise<ListResponse> {
+    const plagasCuarentenarias = await this.plagasCuarentenariasService.findAll();
+
+    return {
+      plagascu: plagasCuarentenarias,
+      token: "jwt mamalon"
+      
+    };
   }
 
   @Get(':id')

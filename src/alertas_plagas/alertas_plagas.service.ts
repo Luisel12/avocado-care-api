@@ -17,7 +17,7 @@ export class AlertasPlagasService {
     const AlertasPlagas = await this.AlertasPlagasModel1.create(CreateAlertasPlagasDto);
 
     // Puedes realizar más operaciones o retornar el objeto creado según tus necesidades
-    return 
+    return ;
 
   }
   

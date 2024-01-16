@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreatePlagasDto } from './dto/create-plagas.dto';
 import { UpdatePlagasDto } from './dto/update-plagas.dto';
 import { promises } from 'dns';
@@ -13,12 +13,22 @@ export class PlagasService {
   ) {}
 
   async create(createPlagasDto: CreatePlagasDto): Promise<Plagas> {
-    const Plagas = await this.PlagasModel1.create(CreatePlagasDto);
-    return Plagas;
+    try {
+      const plagas = await this.PlagasModel1.create(createPlagasDto);
+      return plagas;
+    } catch (error) {
+      console.log(error);
+      if (error.code === 11000) {
+        throw new BadRequestException(`${createPlagasDto.NomPlagas} ya está registrado`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error al crear la Plaga');
+    }
   }
 
-  findAll() {
-    return `This action returns all plagas`;
+  async findAll() {
+    const plagas = await this.PlagasModel1.find();
+      return plagas;
+ 
   }
 
   findOne(id: number) {

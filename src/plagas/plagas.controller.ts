@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PlagasService } from './plagas.service';
 import { CreatePlagasDto } from './dto/create-plagas.dto';
 import { UpdatePlagasDto } from './dto/update-plagas.dto';
+import { ListResponse } from './interfaces/list-response.interface';
 
 //esto va en todas la carpetas
 @Controller('api/v1/plagas')
@@ -14,8 +15,13 @@ export class PlagasController {
   }
 
   @Get()
-  findAll() {
-    return this.plagasService.findAll();
+  async findAll(): Promise<ListResponse> {
+    const Plagas = await this.plagasService.findAll();
+
+    return {
+      plagas: Plagas,
+      token:"jwt mamalon"
+    };
   }
 
   @Get(':id')

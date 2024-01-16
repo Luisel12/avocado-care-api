@@ -3,6 +3,8 @@ import { HuertosService } from './huertos.service';
 import { CreateHuertoDto } from './dto/create-huerto.dto';
 import { UpdateHuertoDto } from './dto/update-huerto.dto';
 
+import { ListResponse } from 'src/huertos/interfaces/list-response.interface';
+
 //esto va en todas la carpetas
 @Controller('api/v1/huertos')
 export class HuertosController {
@@ -14,8 +16,13 @@ export class HuertosController {
   }
 
   @Get()
-  findAll() {
-    return this.huertosService.findAll();
+  async findAll(): Promise<ListResponse>{
+    const huertos = await this.huertosService.findAll();
+
+      return {
+        huertos: huertos,
+        token: "jwt mamalon"
+    };
   }
 
   @Get(':id')

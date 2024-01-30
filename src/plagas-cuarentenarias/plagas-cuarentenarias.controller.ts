@@ -21,22 +21,22 @@ export class PlagasCuarentenariasController {
     return {
       plagascu: plagasCuarentenarias,
       token: "jwt mamalon"
-      
+
     };
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.plagasCuarentenariasService.findOne(+id);
+    return this.plagasCuarentenariasService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePlagasCuarentenariaDto: UpdatePlagasCuarentenariaDto) {
-    return this.plagasCuarentenariasService.update(+id, updatePlagasCuarentenariaDto);
+    return this.plagasCuarentenariasService.update(id, updatePlagasCuarentenariaDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.plagasCuarentenariasService.remove(+id);
+    return this.plagasCuarentenariasService.remove(id);
   }
 }

@@ -10,11 +10,11 @@ import { PlagasCuarentenaria, PlagasCuarentenariaSchema } from './entities/plaga
   providers: [PlagasCuarentenariasService],
 
   //Poner en cada uno Exactamente igual solo en se cambia el User
-  imports: [ 
-    MongooseModule.forFeature( 
+  imports: [
+    MongooseModule.forFeature(
       [
-        { 
-          name: PlagasCuarentenaria.name, 
+        {
+          name: PlagasCuarentenaria.name,
           schema: PlagasCuarentenariaSchema
         }
       ]

@@ -11,7 +11,7 @@ import { ListResponse } from './interfaces/list-response.interface';
 export class AlertasEnfermedadesController {
   constructor(private readonly alertasEnfermedadesService: AlertasEnfermedadesService) {}
 
-  @Post('register')
+  @Post()
   create(@Body() createAlertasEnfermedadeDto: CreateAlertasEnfermedadeDto) {
     return this.alertasEnfermedadesService.create(createAlertasEnfermedadeDto);
   }
@@ -21,23 +21,23 @@ export class AlertasEnfermedadesController {
     const alertas = await this.alertasEnfermedadesService.findAll();
 
     return {
-      alertas: alertas, 
+      alertas: alertas,
       token: "jwt mamalon"
     };
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.alertasEnfermedadesService.findOne(+id);
+    return this.alertasEnfermedadesService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAlertasEnfermedadeDto: UpdateAlertasEnfermedadeDto) {
-    return this.alertasEnfermedadesService.update(+id, updateAlertasEnfermedadeDto);
+    return this.alertasEnfermedadesService.update(id, updateAlertasEnfermedadeDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.alertasEnfermedadesService.remove(+id);
+    return this.alertasEnfermedadesService.remove(id);
   }
 }

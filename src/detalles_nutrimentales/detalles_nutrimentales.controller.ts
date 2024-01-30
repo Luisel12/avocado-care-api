@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { DetallesNutrimentalesService } from './detalles_nutrimentales.service';
 import { CreateDetallesNutrimentaleDto } from './dto/create-detalles_nutrimentale.dto';
 import { UpdateDetallesNutrimentaleDto } from './dto/update-detalles_nutrimentale.dto';
-import { ListResponse } from 'src/auth/interfaces/list-response.interface';
+import { ListResponse } from 'src/detalles_nutrimentales/interfaces/list-response.interface';
 import { Nutriente } from 'src/nutrientes/entities/nutriente.entity';
 
 //esto va en todas la carpetas
@@ -20,23 +20,23 @@ export class DetallesNutrimentalesController {
     const nutrimentales = await this.detallesNutrimentalesService.findAll();
 
     return {
-      nutrimentales: nutrimentales,
+      nutrientes: nutrimentales,
       token: "jwt mamalon"
     };
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.detallesNutrimentalesService.findOne(+id);
+    return this.detallesNutrimentalesService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateDetallesNutrimentaleDto: UpdateDetallesNutrimentaleDto) {
-    return this.detallesNutrimentalesService.update(+id, updateDetallesNutrimentaleDto);
+    return this.detallesNutrimentalesService.update(id, updateDetallesNutrimentaleDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.detallesNutrimentalesService.remove(+id);
+    return this.detallesNutrimentalesService.remove(id);
   }
 }

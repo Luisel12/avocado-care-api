@@ -9,6 +9,7 @@ import { AlertasEnfermedade } from './entities/alertas_enfermedade.entity';
 import * as bcrypt from "bcrypt";
 import { throwIfEmpty } from 'rxjs';
 import { Enfermedade } from 'src/enfermedades/entities/enfermedade.entity';
+import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
 
 @Injectable()
 export class AlertasEnfermedadesService {
@@ -16,28 +17,50 @@ export class AlertasEnfermedadesService {
   constructor(
     @InjectModel(AlertasEnfermedade.name) private AlertasEnfermedadeModel1: Model<AlertasEnfermedade>
   ) {}
-//aqui mero 
-  async create(createAlertasEnfermedadeDto: CreateAlertasEnfermedadeDto): Promise<Enfermedade> {
-    
-    return ;
+//aqui mero
+async create(createAlertasEnfermedadeDto: CreateAlertasEnfermedadeDto): Promise<Enfermedade> {
+  try {
+    const enfermedad = await this.AlertasEnfermedadeModel1.create(createAlertasEnfermedadeDto);
+    return enfermedad;
+
+  } catch (error) {
+    console.log(error);
+    if (error.code === 11000) {
+      throw new BadRequestException(`${createAlertasEnfermedadeDto.id_Enfermedades} ya está registrado`);
+    }
+    throw new InternalServerErrorException('Ocurrió un error al crear la Enfermedad');
+  }
 }
-//aqui mas 
+//aqui mas
   async findAll(): Promise<Enfermedade[]> {
     const alertas = await this.AlertasEnfermedadeModel1.find();
 
-    return alertas; 
-     
+    return alertas;
+
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} alertasEnfermedade`;
+  async findOne(id: string) {
+    const alerta = await this.AlertasEnfermedadeModel1.findById(id);
+    if(!alerta)
+
+    throw new NotFoundException("El ID resivido no existe");
+    return alerta;
   }
 
-  async update(id: number, updateAlertasEnfermedadeDto: UpdateAlertasEnfermedadeDto): Promise <AlertasEnfermedade> {
-    return;
+  async update(id: string, updateAlertasEnfermedadeDto: UpdateAlertasEnfermedadeDto): Promise <AlertasEnfermedade> {
+    let alerta= await this.findOne(id);
+    if(id != updateAlertasEnfermedadeDto._id)
+    throw new BadRequestException("Los IDs no coinciden")
+
+    await this.AlertasEnfermedadeModel1.updateOne({_id: id}, updateAlertasEnfermedadeDto)
+    alerta= await this.findOne(id);
+    return alerta;
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} alertasEnfermedade`;
+  async remove(id: string) {
+    const alerta = await this.findOne(id);
+
+    await this.AlertasEnfermedadeModel1.deleteOne({_id: id});
+    return alerta;
   }
 }

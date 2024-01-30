@@ -1,7 +1,7 @@
-import { Plagas } from "src/plagas/entities/plagas.entity";
+import { AlertasPlagas } from "src/alertas_plagas/entities/alertas_plagas.entity";
 
 
 export interface ListResponse{
-    plagas: Plagas[],
+    alertaplagas: AlertasPlagas[],
     token: string
 }

@@ -7,6 +7,7 @@ import { Model, model } from 'mongoose';
 import { Huerto } from './entities/huerto.entity';
 import { BadRequestException } from '@nestjs/common';
 import { InternalServerErrorException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
 
 @Injectable()
 export class HuertosService {
@@ -16,7 +17,7 @@ export class HuertosService {
 
   async create(createHuertoDto: CreateHuertoDto): Promise<Huerto> {
     try {
-                        
+
       const huerto = await this.HuertoModel1.create(createHuertoDto);
       return huerto;
 
@@ -31,21 +32,46 @@ export class HuertosService {
   }
 
 
-  async findAll() {
+  async findAll(): Promise<Huerto[]> {
     const huerto = await this.HuertoModel1.find();
       return huerto;
- 
+
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} huerto`;
+  async findbyuserid(id_Usuario: string): Promise<Huerto[]>  {
+    const huerto = await this.HuertoModel1.find({id_Usuario});
+
+    if (!huerto) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return huerto;
   }
 
-  async update(id: number, updateHuertoDto: UpdateHuertoDto): Promise <Huerto > {
-    return ;
+  async findOne(_id: string) {
+    const huerto = await this.HuertoModel1.findById(_id);
+
+    if (!huerto) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return huerto;
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} huerto`;
+  async update(id: string, updateHuertoDto: UpdateHuertoDto): Promise <Huerto > {
+    let huerto= await this.findOne(id);
+    if(id != updateHuertoDto._id)
+    throw new BadRequestException("Los IDs no coinciden")
+
+    await this.HuertoModel1.updateOne({_id: id}, updateHuertoDto)
+    huerto = await this.findOne(id);
+    return huerto;
+  }
+
+  async remove(id: string) {
+    const huerto = await this.findOne(id);
+
+    await this.HuertoModel1.deleteOne({_id: id});
+    return huerto;
   }
 }

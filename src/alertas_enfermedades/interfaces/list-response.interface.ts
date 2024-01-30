@@ -1,5 +1,5 @@
-import { Enfermedade } from "src/enfermedades/entities/enfermedade.entity";
 
+import { Enfermedade } from "src/enfermedades/entities/enfermedade.entity";
 
 export interface ListResponse{
     alertas: Enfermedade[],

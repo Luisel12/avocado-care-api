@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { EnfermedadesService } from './enfermedades.service';
 import { CreateEnfermedadeDto } from './dto/create-enfermedade.dto';
 import { UpdateEnfermedadeDto } from './dto/update-enfermedade.dto';
-import { ListResponse } from 'src/auth/interfaces/list-response.interface';
+import { ListResponse } from 'src/enfermedades/interfaces/list-response.interface';
 import { Enfermedade } from './entities/enfermedade.entity';
 
 //esto va en todas la carpetas
@@ -16,7 +16,7 @@ export class EnfermedadesController {
   }
 
   @Get()
-  findAll(): Promise<ListResponse> {
+  async findAll(): Promise<ListResponse> {
     const detalles = await this.enfermedadesService.findAll();
 
     return {
@@ -27,16 +27,16 @@ export class EnfermedadesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.enfermedadesService.findOne(+id);
+    return this.enfermedadesService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEnfermedadeDto: UpdateEnfermedadeDto) {
-    return this.enfermedadesService.update(+id, updateEnfermedadeDto);
+    return this.enfermedadesService.update(id, updateEnfermedadeDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.enfermedadesService.remove(+id);
+    return this.enfermedadesService.remove(id);
   }
 }

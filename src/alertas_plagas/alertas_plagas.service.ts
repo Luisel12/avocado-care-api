@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateAlertasPlagasDto } from './dto/create-alertas_plagas.dto';
 import { UpdateAlertasPlagasDto } from './dto/update-alertas_plagas.dto';
 import { promises } from 'dns';
@@ -18,28 +18,45 @@ export class AlertasPlagasService {
   ) {}
   
   async create(createAlertasEnfermedadeDto: CreateAlertasPlagasDto): Promise<AlertasPlagas> {
-
-    const AlertasPlagas = await this.AlertasPlagasModel1.create(CreateAlertasPlagasDto);
-
-    return ;
+    try {
+      const alertasPlagas = await this.AlertasPlagasModel1.create(createAlertasEnfermedadeDto);
+      return alertasPlagas;
+    } catch (error) {
+      console.log(error);
+      if (error.code === 11000) {
+        throw new BadRequestException(`${createAlertasEnfermedadeDto.id_Plagas} ya está registrado`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error al crear la Alerta de Plaga');
+    }
   }
   
-  async findAll(): Promise<Plagas[]> {
-    const plagas = await this.AlertasPlagasModel1.find();
-
-    return plagas;
-    
+  async findAll(): Promise<AlertasPlagas[]> {
+    const alertasPlagas = await this.AlertasPlagasModel1.find();
+    return alertasPlagas;
   }
   
-  async findOne(id: number) {
-    return `This action returns a #${id} alertasPlagas`;
+  async findOne(id: string) {
+    const alertaplaga = await this.AlertasPlagasModel1.findById(id);
+    if(!alertaplaga)
+
+    throw new NotFoundException("El ID resivido no existe");
+    return alertaplaga;
   }
 
-  async update(id: number, updateAlertasPlagasDto: UpdateAlertasPlagasDto): Promise <AlertasPlagas> {
-    return ;
+  async update(id: string, updateAlertasPlagasDto: UpdateAlertasPlagasDto): Promise <AlertasPlagas> {
+    let alertaplaga = await this.findOne(id);
+      if(id != updateAlertasPlagasDto.id_Plagas)
+      throw new BadRequestException("Los IDs no coinciden")
+
+      await this.AlertasPlagasModel1.updateOne({_id: id}, updateAlertasPlagasDto)
+      alertaplaga =  await this.findOne(id);
+    return alertaplaga;
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} alertasPlagas`;
+  async remove(id: string) {
+    const alertaplaga = await this.findOne(id);
+
+    await this.AlertasPlagasModel1.deleteOne({_id: id});
+    return alertaplaga;
   }
 }

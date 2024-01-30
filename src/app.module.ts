@@ -12,6 +12,8 @@ import { NutrientesModule } from './nutrientes/nutrientes.module';
 import { Mongoose } from 'mongoose';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+
 
 
 @Module({
@@ -22,6 +24,13 @@ import { ConfigModule } from '@nestjs/config';
       dbName: process.env.MONGO_DBNAME
     }),
 
+    JwtModule.register({ 
+      global: true,
+      secret: process.env.JWT_SEED,
+      signOptions: {
+        expiresIn:'30m'
+      }
+     }),
 
     AuthModule,
     HuertosModule,

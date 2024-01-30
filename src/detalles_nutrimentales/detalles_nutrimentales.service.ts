@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateDetallesNutrimentaleDto } from './dto/create-detalles_nutrimentale.dto';
 import { UpdateDetallesNutrimentaleDto } from './dto/update-detalles_nutrimentale.dto';
 import { promises } from 'dns';
@@ -9,6 +9,7 @@ import { DetallesNutrimentale } from './entities/detalles_nutrimentale.entity';
 import * as bcrypt from "bcrypt";
 import { throwIfEmpty } from 'rxjs';
 import { Nutriente } from 'src/nutrientes/entities/nutriente.entity';
+import { throws } from 'assert';
 
 @Injectable()
 export class DetallesNutrimentalesService {
@@ -16,27 +17,47 @@ export class DetallesNutrimentalesService {
     @InjectModel(DetallesNutrimentale.name) private DetallesNutrimentaleModel1: Model<DetallesNutrimentale>
   ) {}
 
-  async create(createDetallesNutrimentaleDtoDto: CreateDetallesNutrimentaleDto): Promise<DetallesNutrimentale> {
-
-    // Puedes realizar más operaciones o retornar el objeto creado según tus necesidades
-    return ;
+  async create(createDetallesNutrimentaleDto: CreateDetallesNutrimentaleDto): Promise<DetallesNutrimentale> {
+    try {
+      const detallesNutrimentales = await this.DetallesNutrimentaleModel1.create(createDetallesNutrimentaleDto);
+      return detallesNutrimentales;
+    } catch (error) {
+      console.log(error);
+      if (error.code === 11000) {
+        throw new BadRequestException(`${createDetallesNutrimentaleDto.id_Nutrientes} ya está registrado`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error al crear los Detalles Nutrimentales');
+    }
   }
 
-  async findAll(): Promises<Nutriente[]> {
+
+  async findAll() {
     const nutrimentales = await this.DetallesNutrimentaleModel1.find();
 
     return nutrimentales ;
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} detallesNutrimentale`;
+  async findOne(id: string) {
+    const nutrientes = await this.DetallesNutrimentaleModel1.findById(id);
+    if(!nutrientes)
+    throw new NotFoundException("El ID resivido no existe");
+    return nutrientes;
   }
 
-  async update(id: number, updateDetallesNutrimentaleDto: UpdateDetallesNutrimentaleDto): Promise <DetallesNutrimentale> {
-    return ;
+  async update(id: string, updateDetallesNutrimentaleDto: UpdateDetallesNutrimentaleDto): Promise <DetallesNutrimentale> {
+  let nutriente= await this.findOne(id);
+    if(id != updateDetallesNutrimentaleDto._id)
+    throw new BadRequestException("Los IDs no coinciden")
+
+    await this.DetallesNutrimentaleModel1.updateOne({_id: id}, updateDetallesNutrimentaleDto)
+    nutriente= await this.findOne(id);
+    return nutriente;
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} detallesNutrimentale`;
+  async remove(id: string) {
+    const nutriente = await this.findOne(id);
+
+    await this.DetallesNutrimentaleModel1.deleteOne({_id: id});
+    return nutriente;
   }
 }

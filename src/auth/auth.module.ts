@@ -8,13 +8,13 @@ import { User, UserSchema } from './entities/auth.entity';
 @Module({
   controllers: [AuthController],
   providers: [AuthService],
-
+  exports: [AuthService],
   //Poner en cada uno Exactamente igual solo en se cambia el User
-  imports: [ 
-    MongooseModule.forFeature( 
+  imports: [
+    MongooseModule.forFeature(
       [
-        { 
-          name: User.name, 
+        {
+          name: User.name,
           schema: UserSchema
         }
       ]

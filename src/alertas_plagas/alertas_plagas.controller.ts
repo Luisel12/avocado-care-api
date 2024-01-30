@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AlertasPlagasService } from './alertas_plagas.service';
 import { CreateAlertasPlagasDto } from './dto/create-alertas_plagas.dto';
 import { UpdateAlertasPlagasDto } from './dto/update-alertas_plagas.dto';
-import { ListResponse } from 'src/auth/interfaces/list-response.interface';
+import { ListResponse } from 'src/alertas_plagas/interfaces/list-response.interface';
 import { Plagas } from 'src/plagas/entities/plagas.entity';
 
 
@@ -21,23 +21,23 @@ export class AlertasPlagasController {
     const plagas = await this.alertasPlagasService.findAll();
 
     return {
-      plagas: plagas,
+      alertaplagas: plagas,
       token: "jwt mamalon"
     };
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.alertasPlagasService.findOne(+id);
+    return this.alertasPlagasService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAlertasPlagasDto: UpdateAlertasPlagasDto) {
-    return this.alertasPlagasService.update(+id, updateAlertasPlagasDto);
+    return this.alertasPlagasService.update(id, updateAlertasPlagasDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.alertasPlagasService.remove(+id);
+    return this.alertasPlagasService.remove(id);
   }
 }

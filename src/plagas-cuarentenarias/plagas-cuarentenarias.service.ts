@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreatePlagasCuarentenariaDto } from './dto/create-plagas-cuarentenaria.dto';
 import { UpdatePlagasCuarentenariaDto } from './dto/update-plagas-cuarentenaria.dto';
 import { promises } from 'dns';
@@ -12,7 +12,7 @@ export class PlagasCuarentenariasService {
       constructor(
         @InjectModel(PlagasCuarentenaria.name) private PlagasCuarentenariaModel1: Model<PlagasCuarentenaria>
       ) {}
-    
+
       async create(createPlagasCuarentenariaDto: CreatePlagasCuarentenariaDto): Promise<PlagasCuarentenaria> {
         try {
           const plagasCuarentenaria = await this.PlagasCuarentenariaModel1.create(createPlagasCuarentenariaDto);
@@ -24,24 +24,37 @@ export class PlagasCuarentenariasService {
           }
           throw new InternalServerErrorException('Ocurrió un error al crear la Plaga Cuarentenaria');
         }
-      
-    }  
+
+    }
 
   async findAll() {
     const plagasCuarentenaria = await this.PlagasCuarentenariaModel1.find();
       return plagasCuarentenaria;
-   
+
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} plagasCuarentenaria`;
+  async findOne(id: string) {
+    const PlagasCuarentenaria = await this.PlagasCuarentenariaModel1.findById(id);
+    if(!PlagasCuarentenaria)
+
+    throw new NotFoundException("El ID resivido no existe");
+    return PlagasCuarentenaria;
   }
 
-  async update(id: number, updatePlagasCuarentenariaDto: UpdatePlagasCuarentenariaDto): Promise <PlagasCuarentenaria>{
-    return ;
+  async update(id: string, updatePlagasCuarentenariaDto: UpdatePlagasCuarentenariaDto): Promise <PlagasCuarentenaria>{
+  let PlagasCuarentenaria= await this.findOne(id);
+    if(id != updatePlagasCuarentenariaDto._id)
+    throw new BadRequestException("Los IDs no coinciden")
+
+    await this.PlagasCuarentenariaModel1.updateOne({_id: id}, updatePlagasCuarentenariaDto)
+    PlagasCuarentenaria= await this.findOne(id);
+    return PlagasCuarentenaria;
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} plagasCuarentenaria`;
+  async remove(id: string) {
+    const PlagasCuarentenaria = await this.findOne(id);
+
+    await this.PlagasCuarentenariaModel1.deleteOne({_id: id});
+    return PlagasCuarentenaria;
   }
 }

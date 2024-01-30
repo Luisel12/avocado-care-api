@@ -26,16 +26,16 @@ export class PlagasController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.plagasService.findOne(+id);
+    return this.plagasService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePlagasDto: UpdatePlagasDto) {
-    return this.plagasService.update(+id, updatePlagasDto);
+    return this.plagasService.update(id, updatePlagasDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.plagasService.remove(+id);
+    return this.plagasService.remove(id);
   }
 }

@@ -5,6 +5,7 @@ import { promises } from 'dns';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, model } from 'mongoose';
 import { Nutriente } from './entities/nutriente.entity';
+import { NotFoundException } from '@nestjs/common/exceptions/not-found.exception';
 
 
 @Injectable()
@@ -30,18 +31,31 @@ export class NutrientesService {
   async findAll() {
     const nutriente = await this.NutrienteModel1.find();
       return nutriente;
- 
+
   }
 
-  async  findOne(id: number) {
-    return `This action returns a #${id} nutriente`;
+  async  findOne(id: string) {
+    const nutriente = await this.NutrienteModel1.findById(id);
+    if(!nutriente)
+
+    throw new NotFoundException("El ID resivido no existe");
+    return nutriente;
   }
 
-  async  update(id: number, updateNutrienteDto: UpdateNutrienteDto): Promise <Nutriente> {
-    return ;
+  async  update(id: string, updateNutrienteDto: UpdateNutrienteDto): Promise <Nutriente> {
+    let nutriente= await this.findOne(id);
+    if(id != updateNutrienteDto._id)
+    throw new BadRequestException("Los IDs no coinciden")
+
+    await this.NutrienteModel1.updateOne({_id: id}, UpdateNutrienteDto)
+    nutriente= await this.findOne(id);
+    return nutriente;
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} nutriente`;
+  async remove(id: string) {
+       const PlagasCuarentenaria = await this.findOne(id);
+
+    await this.NutrienteModel1.deleteOne({_id: id});
+    return PlagasCuarentenaria;
   }
 }

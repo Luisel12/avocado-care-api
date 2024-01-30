@@ -26,16 +26,16 @@ export class NutrientesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.nutrientesService.findOne(+id);
+    return this.nutrientesService.findOne( id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateNutrienteDto: UpdateNutrienteDto) {
-    return this.nutrientesService.update(+id, updateNutrienteDto);
+    return this.nutrientesService.update(id, updateNutrienteDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.nutrientesService.remove(+id);
+    return this.nutrientesService.remove(id);
   }
 }

@@ -1,7 +1,7 @@
-import { IsDate, IsString } from "class-validator";
+import { IsDate, IsDateString, IsString } from "class-validator";
 
 export class CreateAlertasEnfermedadeDto {
-    
+
     @IsString()
     id_Huerto: string;
 
@@ -9,6 +9,6 @@ export class CreateAlertasEnfermedadeDto {
     id_Enfermedades: string;
 
 
-    @IsDate()
+    @IsDateString()
     Fecha_Alert: Date|null;
 }

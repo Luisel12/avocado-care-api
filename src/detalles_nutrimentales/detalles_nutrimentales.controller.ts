@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { DetallesNutrimentalesService } from './detalles_nutrimentales.service';
 import { CreateDetallesNutrimentaleDto } from './dto/create-detalles_nutrimentale.dto';
 import { UpdateDetallesNutrimentaleDto } from './dto/update-detalles_nutrimentale.dto';
+import { ListResponse } from 'src/auth/interfaces/list-response.interface';
+import { Nutriente } from 'src/nutrientes/entities/nutriente.entity';
 
 //esto va en todas la carpetas
 @Controller('api/v1/detalles-nutrimentales')
@@ -14,8 +16,13 @@ export class DetallesNutrimentalesController {
   }
 
   @Get()
-  findAll() {
-    return this.detallesNutrimentalesService.findAll();
+  async findAll(): Promise<ListResponse> {
+    const nutrimentales = await this.detallesNutrimentalesService.findAll();
+
+    return {
+      nutrimentales: nutrimentales,
+      token: "jwt mamalon"
+    };
   }
 
   @Get(':id')

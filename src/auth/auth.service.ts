@@ -14,7 +14,7 @@ export class AuthService {
   constructor( 
     @InjectModel(User.name) private Usermodel1: Model<User>
   ) {}
-
+//desde aqui 
   async create(createAuthDto: CreateUserDto): Promise<User> {
     
     try{
@@ -37,7 +37,7 @@ export class AuthService {
     }
            
   }
-
+//aqui tambien
   async findAll(): Promise<User[]> {
     const users = await this.Usermodel1.find();
 

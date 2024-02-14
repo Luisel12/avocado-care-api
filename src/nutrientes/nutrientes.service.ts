@@ -28,16 +28,26 @@ export class NutrientesService {
   }
 
 
-  async findAll() {
+  async findAll(): Promise<Nutriente[]> {
     const nutriente = await this.NutrienteModel1.find();
       return nutriente;
 
   }
 
-  async  findOne(id: string) {
-    const nutriente = await this.NutrienteModel1.findById(id);
-    if(!nutriente)
+  async findbyuserid(id_infonutri: string): Promise<Nutriente[]>  {
+    const nutriente = await this.NutrienteModel1.find({id_infonutri});
 
+    if (!nutriente) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return nutriente;
+  }
+
+
+  async  findOne(_id: string) {
+    const nutriente = await this.NutrienteModel1.findById(_id);
+    if(!nutriente)
     throw new NotFoundException("El ID resivido no existe");
     return nutriente;
   }

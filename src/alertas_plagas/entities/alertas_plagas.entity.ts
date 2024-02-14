@@ -1,6 +1,8 @@
 import { Prop, SchemaFactory } from "@nestjs/mongoose";
 
 export class AlertasPlagas {
+    
+    _id?: string;
 
     @Prop({required: true})
     id_Plagas: string;

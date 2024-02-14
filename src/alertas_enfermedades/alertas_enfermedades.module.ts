@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { AlertasEnfermedadesController } from './alertas_enfermedades.controller';
 import { AlertasEnfermedade,AlertasEnfermedadesSchema  } from './entities/alertas_enfermedade.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [AlertasEnfermedadesController],
@@ -11,6 +12,7 @@ import { AlertasEnfermedade,AlertasEnfermedadesSchema  } from './entities/alerta
 
   //Poner en cada uno Exactamente igual solo en se cambia el User
   imports: [ 
+    AuthModule,
     MongooseModule.forFeature( 
       [
         { 

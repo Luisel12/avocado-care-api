@@ -4,6 +4,7 @@ import { PlagasCuarentenariasController } from './plagas-cuarentenarias.controll
 import mongoose from 'mongoose';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PlagasCuarentenaria, PlagasCuarentenariaSchema } from './entities/plagas-cuarentenaria.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [PlagasCuarentenariasController],
@@ -11,6 +12,7 @@ import { PlagasCuarentenaria, PlagasCuarentenariaSchema } from './entities/plaga
 
   //Poner en cada uno Exactamente igual solo en se cambia el User
   imports: [
+    AuthModule,
     MongooseModule.forFeature(
       [
         {

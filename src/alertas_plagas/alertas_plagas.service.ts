@@ -43,6 +43,16 @@ export class AlertasPlagasService {
     return alertaplaga;
   }
 
+  async findbyplagaid(id_Plagas: string): Promise<AlertasPlagas[]>  {
+    const plaga = await this.AlertasPlagasModel1.find({id_Plagas});
+
+    if (!plaga) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return plaga;
+  }
+
   async update(id: string, updateAlertasPlagasDto: UpdateAlertasPlagasDto): Promise <AlertasPlagas> {
     let alertaplaga = await this.findOne(id);
       if(id != updateAlertasPlagasDto.id_Plagas)

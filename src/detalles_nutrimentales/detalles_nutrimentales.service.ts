@@ -31,10 +31,39 @@ export class DetallesNutrimentalesService {
   }
 
 
-  async findAll() {
+  async findAll(): Promise<DetallesNutrimentale[]> {
     const nutrimentales = await this.DetallesNutrimentaleModel1.find();
-
     return nutrimentales ;
+  }
+
+  async findbyhuertoid(id_Huerto: string): Promise<DetallesNutrimentale[]>  {
+    const huertoid = await this.DetallesNutrimentaleModel1.find({id_Huerto});
+
+    if (!huertoid) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return huertoid;
+  }
+
+  async findbynutrienteid(id_Nutrientes: string): Promise<DetallesNutrimentale[]>  {
+    const nutrienteid = await this.DetallesNutrimentaleModel1.find({id_Nutrientes});
+
+    if (!nutrienteid) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return nutrienteid;
+  }
+
+  async findbyinfonutriid(id_infonutri: string): Promise<DetallesNutrimentale[]>  {
+    const nutrienteid = await this.DetallesNutrimentaleModel1.find({id_infonutri});
+
+    if (!nutrienteid) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return nutrienteid;
   }
 
   async findOne(id: string) {

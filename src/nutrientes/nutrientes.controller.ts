@@ -1,41 +1,79 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,Request, UseGuards } from '@nestjs/common';
 import { NutrientesService } from './nutrientes.service';
 import { CreateNutrienteDto } from './dto/create-nutriente.dto';
 import { UpdateNutrienteDto } from './dto/update-nutriente.dto';
 import { ListResponse } from 'src/nutrientes/interfaces/list-response.interface';
+import { JwtService } from '@nestjs/jwt';
+import { createjwt } from 'src/shared/services/jwtvalidator/jwtvalidator.service';
+
+import { AuthGuard } from 'src/auth/guards/auth/auth.guard';
+import { HuertoResponse } from 'src/huertos/interfaces/huertos-response.interface';
+import { NutrienteResponse } from './interfaces/nutrientes-response.interface';
 
 //esto va en todas la carpetas
 @Controller('api/v1/nutrientes')
 export class NutrientesController {
-  constructor(private readonly nutrientesService: NutrientesService) {}
+  constructor(private readonly nutrientesService: NutrientesService, private jwt:JwtService) {}
 
   @Post()
   create(@Body() createNutrienteDto: CreateNutrienteDto) {
     return this.nutrientesService.create(createNutrienteDto);
   }
 
-  @Get()
-  async findAll(): Promise<ListResponse> {
-    const nutrientes = await this.nutrientesService.findAll();
 
+  @UseGuards(AuthGuard)
+  @Get()
+  async findAll(@Request()req: Request): Promise<ListResponse> {
+
+    const nutrientes = await this.nutrientesService.findAll();
+    const nutriall = req ['user']
     return {
       nutrientes: nutrientes,
-      token: 'jwt mamalon',
+      token: createjwt({id: nutriall._id}, this.jwt)
     };
   }
 
+
+  @UseGuards(AuthGuard)
+  @Get('bynutriid/:id_infonutri')
+  async findbyuserid(@Param('id_infonutri') id: string, @Request() req: Request): Promise<ListResponse> {
+    const utriid = req["user"];
+
+    return {
+      nutrientes: await this.nutrientesService.findbyuserid(id),
+      token:createjwt({id: utriid._id}, this.jwt)
+    };
+  }
+
+  @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.nutrientesService.findOne( id);
+  async findOne(@Param('id') id: string, @Request() req: Request): Promise<NutrienteResponse> {
+   const nutrio = req['user']
+
+    return{
+      nutriente: await this.nutrientesService.findOne(id),
+      token:createjwt({id: nutrio._id}, this.jwt)
+    } ;
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNutrienteDto: UpdateNutrienteDto) {
-    return this.nutrientesService.update(id, updateNutrienteDto);
-  }
+  async update(@Param('id') id: string, @Body() updateNutrienteDto: UpdateNutrienteDto, @Request() req: Request): Promise<NutrienteResponse>{
+    const nutriup = req['user']
+    console.log('info nutriente', nutriup)
+    return{
+      nutriente: await this.nutrientesService.update(id, updateNutrienteDto),
+      token:createjwt({id: nutriup._id}, this.jwt)
 
+    };
+  }
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.nutrientesService.remove(id);
+  async remove(@Param('id') id: string, @Request()req: Request) {
+    const nutridel = req ["user"]
+    return{
+      nutriente: await this.nutrientesService.remove(id),
+      token:createjwt({id: nutridel._id}, this.jwt)
+    } ;
   }
 }

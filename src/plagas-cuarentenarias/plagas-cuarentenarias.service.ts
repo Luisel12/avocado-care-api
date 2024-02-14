@@ -41,6 +41,26 @@ export class PlagasCuarentenariasService {
     return PlagasCuarentenaria;
   }
 
+  async findbyhuertoid(id_Huerto: string): Promise<PlagasCuarentenaria[]>  {
+    const huertoid = await this.PlagasCuarentenariaModel1.find({id_Huerto});
+
+    if (!huertoid) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return huertoid;
+  }
+
+  async findbyplagaid(id_Plagas: string): Promise<PlagasCuarentenaria[]>  {
+    const plaga = await this.PlagasCuarentenariaModel1.find({id_Plagas});
+
+    if (!plaga) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return plaga;
+  }
+
   async update(id: string, updatePlagasCuarentenariaDto: UpdatePlagasCuarentenariaDto): Promise <PlagasCuarentenaria>{
   let PlagasCuarentenaria= await this.findOne(id);
     if(id != updatePlagasCuarentenariaDto._id)

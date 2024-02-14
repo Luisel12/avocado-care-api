@@ -3,6 +3,7 @@ import { PlagasService } from './plagas.service';
 import { PlagasController } from './plagas.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Plagas, PlagasSchema } from './entities/plagas.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [PlagasController],
@@ -10,6 +11,7 @@ import { Plagas, PlagasSchema } from './entities/plagas.entity';
 
   //Poner en cada uno Exactamente igual solo en se cambia el User
   imports: [ 
+    AuthModule,
     MongooseModule.forFeature( 
       [
         { 

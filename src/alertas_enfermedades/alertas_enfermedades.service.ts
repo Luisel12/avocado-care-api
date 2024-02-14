@@ -38,6 +38,7 @@ async create(createAlertasEnfermedadeDto: CreateAlertasEnfermedadeDto): Promise<
     return alertas;
 
   }
+  
 
   async findOne(id: string) {
     const alerta = await this.AlertasEnfermedadeModel1.findById(id);
@@ -45,6 +46,36 @@ async create(createAlertasEnfermedadeDto: CreateAlertasEnfermedadeDto): Promise<
 
     throw new NotFoundException("El ID resivido no existe");
     return alerta;
+  }
+
+  async findbyhuertoid(id_Huerto: string): Promise<AlertasEnfermedade[]>  {
+    const huertoid = await this.AlertasEnfermedadeModel1.find({id_Huerto});
+
+    if (!huertoid) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return huertoid;
+  }
+
+  async findbyenfid(id_Enfermedades: string): Promise<AlertasEnfermedade[]>  {
+    const enfid = await this.AlertasEnfermedadeModel1.find({id_Enfermedades});
+
+    if (!enfid) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return enfid;
+  }
+
+  async findbyenfermedadesid(id_Huerto: string): Promise<AlertasEnfermedade[]>  {
+    const enfermdadid = await this.AlertasEnfermedadeModel1.find({id_Huerto});
+
+    if (!enfermdadid) {
+      throw new NotFoundException("El ID recibido no existe");
+    }
+
+    return enfermdadid;
   }
 
   async update(id: string, updateAlertasEnfermedadeDto: UpdateAlertasEnfermedadeDto): Promise <AlertasEnfermedade> {

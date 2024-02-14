@@ -1,41 +1,61 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards,Request  } from '@nestjs/common';
 import { PlagasService } from './plagas.service';
 import { CreatePlagasDto } from './dto/create-plagas.dto';
 import { UpdatePlagasDto } from './dto/update-plagas.dto';
 import { ListResponse } from './interfaces/list-response.interface';
+import { AuthGuard } from 'src/auth/guards/auth/auth.guard';
+import { createjwt } from 'src/shared/services/jwtvalidator/jwtvalidator.service';
+import { JwtService } from '@nestjs/jwt';
+import { PlagasResponse } from './interfaces/plagas-response.interface';
 
 //esto va en todas la carpetas
 @Controller('api/v1/plagas')
 export class PlagasController {
-  constructor(private readonly plagasService: PlagasService) {}
+  constructor(private readonly plagasService: PlagasService, private jwt:JwtService) {}
 
   @Post()
   create(@Body() createPlagasDto: CreatePlagasDto) {
     return this.plagasService.create(createPlagasDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
-  async findAll(): Promise<ListResponse> {
+  async findAll(@Request()req: Request): Promise<ListResponse> {
     const Plagas = await this.plagasService.findAll();
-
+    const plagaall =  req ["user"]
     return {
       plagas: Plagas,
-      token:"jwt mamalon"
+      token: createjwt({id: plagaall._id}, this.jwt)
     };
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.plagasService.findOne(id);
+  async findOne(@Param('id') id: string, @Request() req: Request): Promise<PlagasResponse> {
+    const plagaid = req["user"];
+    return{
+      plagasR: await this.plagasService.findOne(id),
+      token:createjwt({id: plagaid._id}, this.jwt)
+    } ;
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePlagasDto: UpdatePlagasDto) {
-    return this.plagasService.update(id, updatePlagasDto);
+  async update(@Param('id') id: string, @Body() updatePlagasDto: UpdatePlagasDto, @Request() req: Request): Promise<PlagasResponse>{
+    const plagasup = req["user"];
+    return{
+      plagasR: await this.plagasService.update(id, updatePlagasDto),
+      token:createjwt({id: plagasup._id}, this.jwt)
+    }
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.plagasService.remove(id);
+  async remove(@Param('id') id: string,@Request() req: Request) {
+    const plagasdel = req["user"];
+    return{
+      plagasR: await this.plagasService.remove(id),
+      token:createjwt({id: plagasdel._id}, this.jwt)
+    } ;
   }
 }

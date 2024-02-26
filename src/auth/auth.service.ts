@@ -67,7 +67,8 @@ export class AuthService {
     const users = await this.Usermodel1.find();
 
     return users.map( (user) => {
-      const { Contra, ...rest } = user.toJSON();
+      const { Contra,   ...rest } = user.toJSON();
+
 
       return rest;
     } );
@@ -75,10 +76,13 @@ export class AuthService {
 
   async findOne(id: string) {
     const user = await this.Usermodel1.findById(id);
-    if(!user)
+    if(!user){
+    throw new NotFoundException('El ID resivido no existe');}
 
-    throw new NotFoundException('El ID resivido no existe');
-    return user;
+    const { Contra, ...rest } = user.toJSON();
+
+    return rest;
+
   }
 
   async update(id: string, updateAuthDto: UpdateAuthDto): Promise <User> {

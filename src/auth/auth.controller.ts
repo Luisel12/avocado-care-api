@@ -9,6 +9,7 @@ import { LoginUserDto } from './dto/login-auth.dto';
 import { AuthResponse } from './interfaces/auth-response.interface';
 import { createjwt } from 'src/shared/services/jwtvalidator/jwtvalidator.service';
 import { JwtService } from '@nestjs/jwt';
+
 //esto va en todas la carpetas
 @Controller('api/v1/auth')
 export class AuthController {
@@ -35,7 +36,7 @@ export class AuthController {
 
     const userl =  req ['user']
     return {
-      users: users, 
+      users: users,
       token: createjwt({id: userl._id}, this.jwt)
     };
 
@@ -45,8 +46,8 @@ export class AuthController {
   @Get(':id')
   async findOne(@Param('id') id: string, @Request()req: Request): Promise<AuthResponse> {
     const usero = req ["user"]
-    return{ 
-      user: await this.authService.findOne(id), 
+    return{
+      user: await this.authService.findOne(id),
       token : createjwt({id: usero._id}, this.jwt)
     } ;
   }

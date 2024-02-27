@@ -47,7 +47,7 @@ export class AuthService {
 
       const user = await this.Usermodel1.create(createAuthDto);
 
-      const { Contra, ...rest } = user.toJSON();
+      const { Contra,  ...rest } = user.toJSON();
 
       return rest;
 

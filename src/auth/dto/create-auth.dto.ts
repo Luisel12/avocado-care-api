@@ -13,6 +13,5 @@ export class CreateUserDto {
     @IsString()
     Nombre: string;
 
-    @IsBoolean()
-    isActive: boolean;
+   
 }

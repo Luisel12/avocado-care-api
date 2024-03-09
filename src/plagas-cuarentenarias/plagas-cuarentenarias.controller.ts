@@ -14,9 +14,15 @@ import { PlagasCuResponse } from './interfaces/plagas-cuarentenarias-response.in
 export class PlagasCuarentenariasController {
   constructor(private readonly plagasCuarentenariasService: PlagasCuarentenariasService, private jwt:JwtService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createPlagasCuarentenariaDto: CreatePlagasCuarentenariaDto) {
-    return this.plagasCuarentenariasService.create(createPlagasCuarentenariaDto);
+  async create(@Body() createPlagasCuarentenariaDto: CreatePlagasCuarentenariaDto, @Request()req: Request) {
+    const plagascua = await this.plagasCuarentenariasService.create(createPlagasCuarentenariaDto);
+    const plagascucre =  req ["user"]
+    return {
+      plagascu: plagascua,
+      token: createjwt({id: plagascucre._id}, this.jwt)
+    };
   }
 
   @UseGuards(AuthGuard)

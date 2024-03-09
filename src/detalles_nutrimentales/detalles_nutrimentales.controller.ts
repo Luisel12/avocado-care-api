@@ -15,10 +15,18 @@ import { DetallesResponse } from './interfaces/detalles_nutrimentales-response.i
 export class DetallesNutrimentalesController {
   constructor(private readonly detallesNutrimentalesService: DetallesNutrimentalesService, private jwt:JwtService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createDetallesNutrimentaleDto: CreateDetallesNutrimentaleDto) {
-    return this.detallesNutrimentalesService.create(createDetallesNutrimentaleDto);
+  async create(@Body() createDetallesNutrimentaleDto: CreateDetallesNutrimentaleDto, @Request()req: Request) {
+    const detalles = await this.detallesNutrimentalesService.create(createDetallesNutrimentaleDto);
+    const detalle = req ["user"];
+    return {
+      detallesnutri: detalles,
+
+      token: createjwt({id: detalle._id}, this.jwt)
+    };
   }
+  
   
   @UseGuards(AuthGuard)
   @Get()

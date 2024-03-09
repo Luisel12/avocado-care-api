@@ -18,7 +18,7 @@ import { DetallesNutrimentale, DetallesNutrimentaleSchema } from './entities/det
     MongooseModule.forFeature( 
       [
         { 
-          name: Huerto.name, 
+          name: Huerto.name,
           schema: HuertoSchema
         },
         {

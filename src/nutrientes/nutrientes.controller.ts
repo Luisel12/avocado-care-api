@@ -10,14 +10,24 @@ import { AuthGuard } from 'src/auth/guards/auth/auth.guard';
 import { HuertoResponse } from 'src/huertos/interfaces/huertos-response.interface';
 import { NutrienteResponse } from './interfaces/nutrientes-response.interface';
 
+
 //esto va en todas la carpetas
 @Controller('api/v1/nutrientes')
 export class NutrientesController {
   constructor(private readonly nutrientesService: NutrientesService, private jwt:JwtService) {}
 
+
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createNutrienteDto: CreateNutrienteDto) {
-    return this.nutrientesService.create(createNutrienteDto);
+  async create(@Body() createNutrienteDto: CreateNutrienteDto, @Request()req: Request) {
+    const nutriente =  this.nutrientesService.create(createNutrienteDto);
+    const nutricreate = req ['user']
+
+    return {
+      nutrientes: nutriente,
+      token: createjwt({id: nutricreate._id}, this.jwt)
+    }
+
   }
 
 

@@ -13,10 +13,16 @@ import { EnfermedadesResponse } from './interfaces/enfermedades-response.interfa
 @Controller('api/v1/enfermedades')
 export class EnfermedadesController {
   constructor(private readonly enfermedadesService: EnfermedadesService, private jwt:JwtService) {}
-
+  
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createEnfermedadeDto: CreateEnfermedadeDto) {
-    return this.enfermedadesService.create(createEnfermedadeDto);
+  async create(@Body() createEnfermedadeDto: CreateEnfermedadeDto, @Request()req: Request) {
+    const enfermedad = this.enfermedadesService.create(createEnfermedadeDto);
+    const enfer = req ["user"]
+    return {
+      detalles : enfermedad,
+      token: createjwt({id: enfer._id}, this.jwt)
+    }
   }
 
   @UseGuards(AuthGuard)

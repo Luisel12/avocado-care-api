@@ -14,9 +14,16 @@ import { AlertasPlaResponse } from './interfaces/alertas_plagas-response.interfa
 export class AlertasPlagasController {
   constructor(private readonly alertasPlagasService: AlertasPlagasService, private jwt:JwtService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createAlertasPlagasDto: CreateAlertasPlagasDto) {
-    return this.alertasPlagasService.create(createAlertasPlagasDto);
+  async create(@Body() createAlertasPlagasDto: CreateAlertasPlagasDto, @Request()req: Request) {
+    const plaga = await this.alertasPlagasService.create(createAlertasPlagasDto);
+    const plagacreate = req ["user"];
+
+    return {
+      alertaspla : plaga,
+      token: createjwt({id: plagacreate._id}, this.jwt)
+    }
   }
 
   @UseGuards(AuthGuard)

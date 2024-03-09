@@ -14,9 +14,15 @@ import { AlertasEnfResponse } from './interfaces/alertas_enfermedades-response.i
 export class AlertasEnfermedadesController {
   constructor(private readonly alertasEnfermedadesService: AlertasEnfermedadesService, private jwt:JwtService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createAlertasEnfermedadeDto: CreateAlertasEnfermedadeDto) {
-    return this.alertasEnfermedadesService.create(createAlertasEnfermedadeDto);
+  async create(@Body() createAlertasEnfermedadeDto: CreateAlertasEnfermedadeDto, @Request()req: Request) {
+    const alertaenfe = await this.alertasEnfermedadesService.create(createAlertasEnfermedadeDto);
+    const alertenf = req ["user"]
+    return {
+      alertas : alertaenfe,
+      token: createjwt({id: alertenf._id}, this.jwt)
+    }
   }
 
   @Get()

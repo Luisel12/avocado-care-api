@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards,Request } 
 import { HuertosService } from './huertos.service';
 import { CreateHuertoDto } from './dto/create-huerto.dto';
 import { UpdateHuertoDto } from './dto/update-huerto.dto';
-
+import { Huerto } from './entities/huerto.entity';
 import { ListResponse } from 'src/huertos/interfaces/list-response.interface';
 import { AuthGuard } from 'src/auth/guards/auth/auth.guard';
 import { createjwt } from 'src/shared/services/jwtvalidator/jwtvalidator.service';
@@ -12,10 +12,18 @@ import { HuertoResponse } from './interfaces/huertos-response.interface';
 @Controller('api/v1/huertos')
 export class HuertosController {
   constructor(private readonly huertosService: HuertosService, private jwt:JwtService) {}
-
+  
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createHuertoDto: CreateHuertoDto) {
-    return this.huertosService.create(createHuertoDto);
+  async create(@Body() createHuertoDto: CreateHuertoDto, @Request()req: Request) {
+    const huertos = await this.huertosService.create(createHuertoDto);
+    const userl =  req ["user"];
+
+
+    return {
+      huertos: huertos,
+        token: createjwt({id: userl._id}, this.jwt)
+    }
   }
 
 

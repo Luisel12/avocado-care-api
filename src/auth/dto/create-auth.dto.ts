@@ -7,10 +7,9 @@ export class CreateUserDto {
 
     
     @MinLength(8)
-    
     Contra: string;
 
-    @IsString()
+    @MinLength(3)
     Nombre: string;
 
    

@@ -13,9 +13,16 @@ import { PlagasResponse } from './interfaces/plagas-response.interface';
 export class PlagasController {
   constructor(private readonly plagasService: PlagasService, private jwt:JwtService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createPlagasDto: CreatePlagasDto) {
-    return this.plagasService.create(createPlagasDto);
+  create(@Body() createPlagasDto: CreatePlagasDto, @Request()req: Request) {
+    const plaga =  this.plagasService.create(createPlagasDto);
+    const plagacreate = req ["user"]
+
+    return {
+      plagas : plaga,
+      token: createjwt({id: plagacreate._id}, this.jwt)
+    }
   }
 
   @UseGuards(AuthGuard)
